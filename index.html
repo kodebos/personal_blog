@@ -3,9 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Personal</title>
+    <title>Personal Blog</title>
 </head>
 <body>
-    
+    <div class="container">
+        <header>
+            <h1>My Personal Blog</h1>
+            <div class="header-controls">
+                <button class="theme-toggle" onclick="toggleTheme()">Dark/Light</button>
+                <button class="btn" onclick="toggleEditor()">New Post</button>
+            </div>
+        </header>
+
+        <div class="editor-container" id="editorContainer">
+            <h2 id="editorTitle">Create New Post</h2>
+            <form id="postForm" onsubmit="savePost(event)">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="postTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="postCategory">
+                        <option value="General">General</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Lifestyle">Lifestyle</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Food">Food</option>
+                    </select>
+                </div>
+
+                <div class="editor-layout">
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea id="postContent" oninput="updatePreview()" required></textarea>
+                    </div>
+
+                    <div class="preview-container">
+                        <h3>Live Preview</h3>
+                        <div id="preview"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn" name="action" value="publish">Publish</button>
+                    <button type="submit" class="btn btn-secondary" name="action" value="draft">Save Draft</button>
+                    <button type="button" class="btn btn-secondary" onclick="exportPost()">Export</button>
+                    <button type="button" class="btn btn-secondary" onclick="toggleEditor()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <input type="text" class="search-bar" id="searchBar" placeholder="Search posts..." oninput="filterPosts()">
+
+        <div class="categories" id="categoriesFilter"></div>
+
+        <div class="posts-grid" id="postsGrid"></div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <h3>No posts yet</h3>
+            <p>Start by writing your first post</p>
+        </div>
+    </div>
+
+    <div class="modal" id="postModal">
+        <div class="modal-contet">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="close-modal" onclick="closeModal()">x</button>
+            </div>
+            <div id="modalCategory"></div>
+            <div id="modalDate"></div>
+            <div id="modalContent"></div>
+            <div class="share-buttons">
+                <button class="share-btn" onclick="sharePost('whatsapp')">Whatsapp</button>
+                <button class="share-btn" onclick="sharePost('twitter')">X (Twitter)</button>
+                <button class="share-btn" onclick="sharePost('reddit')">Reddit</button>
+                <button class="share-btn" onclick="copyLink()">Copy Link</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
