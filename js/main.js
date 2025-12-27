@@ -77,3 +77,47 @@ function savePost(event) {
     toggleEditor();
     resetForm();
 }
+
+function renderPosts(filter = null, category = null) {
+    const grid = document.getElementById('postsBrid');
+    const emptyState = document.getElementById('emptyState');
+
+    let filteredPosts = posts;
+
+    if (filter) {
+        filteredPosts = posts.filter(post =>
+            post.title.toLowerCase().includes(filter.toLowerCase()) ||
+            post.content.toLowerCase().includes(filter.toLowerCase())
+        );
+    }
+
+    if (category) {
+        filteredPosts = filteredPosts.filter(posts => posts.category === category);
+    }
+
+    if (filteredPosts.length === 0) {
+        grid.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
+    }
+
+    emptyState.style.display = 'none';
+
+    grid.innerHTML = filteredPosts.map(post => `
+        <div class="post-card" onclick="openPost('${post.id}')">
+            <div class="post-header">
+                <span class="post-category">${post.category}</span>
+                ${post.status === 'draft' ? '<span class="post-status">Draft</span>' : ''}
+            </div>
+            <h3 class="post-title">${post.title}</h3>
+            <p class="post-excerpt">${post.content.substring(0, 120)}${post.content.length > 120 ? '...' : ''}</p>
+            <div class="post-meta">
+                <span>${formatDate(post.date)}</span>
+                <div class="post-actions" onclick="event.stopPropagation()">
+                    <button class="icon-btn" onclick="editPost('${post.id}')" title="Edit">Edit</button>
+                    <button class="icon-btn" onclick="deletePost('${post.id}')" title="Delete">Delete</button>
+                </div>
+            </div>
+        </div>
+        `).join('');
+}
