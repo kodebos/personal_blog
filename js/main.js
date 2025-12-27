@@ -48,7 +48,7 @@ function updatePreview() {
 function savePost(event) {
     event.preventDefault();
 
-    const title = document.getElementById('postTitle'),value;
+    const title = document.getElementById('postTitle').value;
     const category = document.getElementById('postCategory').value;
     const content = document.getElementById('postContent').value;
     const action = event.submitter.value;
