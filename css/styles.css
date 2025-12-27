@@ -356,3 +356,31 @@ textarea {
     font-size: 1.3rem;
     margin-bottom: 10px;
 }
+
+@media (max-width: 768px) {
+    .editor-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .share-buttons {
+        flex-wrap: wrap;
+    }
+
+    .share-btn {
+        flex: 1 1 45%;
+    }
+}
