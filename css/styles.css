@@ -345,3 +345,14 @@ textarea {
     color: white;
     border-color: var(--accent);
 }
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
