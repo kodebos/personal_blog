@@ -119,5 +119,28 @@ function renderPosts(filter = null, category = null) {
                 </div>
             </div>
         </div>
-        `).join('');
+    `).join('');
+}
+
+function renderCategoryFilter(){
+    const categories = [...new Set(posts.map(post => post.category))];
+    const container = document.getElementById('categoriesFilter');
+
+    container.innerHTML = `
+        <span class="category-tag active" onclick="filterByCategory(null, this)">All</span>
+        ${categories.map(cat =>
+            `<span class="category-tag" onclick="filterByCategory('${cat}', this)">${cat}</span>`
+        ).join('')}
+    `;
+}
+
+function filterByCategory(category, element) {
+    document.querySelectorAll('.category-tag').forEach(tag => tag.classList.remove('active'));
+    element.classList.add('active');
+    renderPosts(null, category);
+}
+
+function filterPosts() {
+    const search = document.getElementById('searchBar').value;
+    renderPosts(search);
 }
