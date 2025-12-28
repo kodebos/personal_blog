@@ -168,3 +168,56 @@ function deletePost(id) {
     renderPosts();
     renderCategoryFilter();
 }
+
+function openPost(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+
+    currentPost = post;
+    document.getElementById('modalTitle').textContent = post.title;
+    document.getElementById('modalCategory').innerHTML = `<span class="post-category">${post.category}</span>`;
+    document.getElementById('modalDate').textContent = formatDate(post.date);
+    document.getElementById('modalContent').innerHTML = post.content.replace(/\n/g, '<br>');
+    document.getElementById('postModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('postModal').classList.remove('active');
+    currentPost = null;
+}
+
+function sharePost(platform) {
+    if (!currentPost) return;
+
+    const url = `${window.location.origin}${window.location.pathname}#${currentPost.slug}`;
+    const text = `${currentPost.title} - ${currentPost.content.substring(0, 100)}...`
+
+    let shareUrl = '';
+
+    switch (platform) {
+        case 'whatsapp':
+            shareUrl = `https://wa.me/?text=${encondeURIComponent(text + ' ' + url)}`;
+            break;
+        case 'twitter':
+            shareUrl = `https://twitter.com/intent/tweet?text=${encondeURIComponent(text)}&url=${encondeURIComponent(url)}`;
+            break;
+        case 'reddit':
+            shareUrl = `https://reddit.com/submit?url=${encondeURIComponent(url)}&title=${encondeURIComponent(currentPost.title)}`;
+            break;
+    }
+
+    if (shareUrl) {
+        window.open(shareUrl, '_blank');
+    }
+}
+
+function copyLink() {
+    if (!currentPost) return;
+
+    const url = `${window.location.origin}${window.location.pathname}#${currentPost.slug}`;
+    navigator.clipboard.writeText(url).then(() => {
+        alert('Link copied to clipboard!');
+    });
+}
+
+init();
