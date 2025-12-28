@@ -144,3 +144,27 @@ function filterPosts() {
     const search = document.getElementById('searchBar').value;
     renderPosts(search);
 }
+
+function editPost(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+
+    editingPostId = id;
+    document.getElementById('editorTitle').textContent = 'Edit Post';
+    document.getElementById('postTitle').value = post.title;
+    document.getElementById('postCategory').value = post.category;
+    document.getElementById('postContent').value = post.content;
+    updatePreview();
+
+    document.getElementById('editorContainer').classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function deletePost(id) {
+    if (!confirm('Are you sure you want to delete this post?')) return;
+
+    posts = posts.filter(p => p.id !== id);
+    localStorage.setItem('blogPosts', JSON.stringify(posts));
+    renderPosts();
+    renderCategoryFilter();
+}
