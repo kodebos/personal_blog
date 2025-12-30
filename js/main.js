@@ -10,7 +10,7 @@ function init() {
 
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'Light' : 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
 }
@@ -23,7 +23,7 @@ function loadTheme() {
 function toggleEditor() {
     const editor = document.getElementById('editorContainer');
     const isActive = editor.classList.contains('active');
-
+    
     if (isActive) {
         editor.classList.remove('active');
         resetForm();
@@ -47,7 +47,7 @@ function updatePreview() {
 
 function savePost(event) {
     event.preventDefault();
-
+    
     const title = document.getElementById('postTitle').value;
     const category = document.getElementById('postCategory').value;
     const content = document.getElementById('postContent').value;
@@ -79,20 +79,20 @@ function savePost(event) {
 }
 
 function renderPosts(filter = null, category = null) {
-    const grid = document.getElementById('postsBrid');
+    const grid = document.getElementById('postsGrid');
     const emptyState = document.getElementById('emptyState');
-
+    
     let filteredPosts = posts;
 
     if (filter) {
-        filteredPosts = posts.filter(post =>
+        filteredPosts = posts.filter(post => 
             post.title.toLowerCase().includes(filter.toLowerCase()) ||
             post.content.toLowerCase().includes(filter.toLowerCase())
         );
     }
 
     if (category) {
-        filteredPosts = filteredPosts.filter(posts => posts.category === category);
+        filteredPosts = filteredPosts.filter(post => post.category === category);
     }
 
     if (filteredPosts.length === 0) {
@@ -102,7 +102,7 @@ function renderPosts(filter = null, category = null) {
     }
 
     emptyState.style.display = 'none';
-
+    
     grid.innerHTML = filteredPosts.map(post => `
         <div class="post-card" onclick="openPost('${post.id}')">
             <div class="post-header">
@@ -122,13 +122,13 @@ function renderPosts(filter = null, category = null) {
     `).join('');
 }
 
-function renderCategoryFilter(){
+function renderCategoryFilter() {
     const categories = [...new Set(posts.map(post => post.category))];
     const container = document.getElementById('categoriesFilter');
-
+    
     container.innerHTML = `
         <span class="category-tag active" onclick="filterByCategory(null, this)">All</span>
-        ${categories.map(cat =>
+        ${categories.map(cat => 
             `<span class="category-tag" onclick="filterByCategory('${cat}', this)">${cat}</span>`
         ).join('')}
     `;
@@ -155,14 +155,14 @@ function editPost(id) {
     document.getElementById('postCategory').value = post.category;
     document.getElementById('postContent').value = post.content;
     updatePreview();
-
+    
     document.getElementById('editorContainer').classList.add('active');
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function deletePost(id) {
     if (!confirm('Are you sure you want to delete this post?')) return;
-
+    
     posts = posts.filter(p => p.id !== id);
     localStorage.setItem('blogPosts', JSON.stringify(posts));
     renderPosts();
@@ -190,19 +190,19 @@ function sharePost(platform) {
     if (!currentPost) return;
 
     const url = `${window.location.origin}${window.location.pathname}#${currentPost.slug}`;
-    const text = `${currentPost.title} - ${currentPost.content.substring(0, 100)}...`
+    const text = `${currentPost.title} - ${currentPost.content.substring(0, 100)}...`;
 
     let shareUrl = '';
-
-    switch (platform) {
+    
+    switch(platform) {
         case 'whatsapp':
-            shareUrl = `https://wa.me/?text=${encondeURIComponent(text + ' ' + url)}`;
+            shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
             break;
         case 'twitter':
-            shareUrl = `https://twitter.com/intent/tweet?text=${encondeURIComponent(text)}&url=${encondeURIComponent(url)}`;
+            shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
             break;
         case 'reddit':
-            shareUrl = `https://reddit.com/submit?url=${encondeURIComponent(url)}&title=${encondeURIComponent(currentPost.title)}`;
+            shareUrl = `https://reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(currentPost.title)}`;
             break;
     }
 
@@ -223,7 +223,7 @@ function copyLink() {
 function exportPost() {
     const title = document.getElementById('postTitle').value;
     const content = document.getElementById('postContent').value;
-
+    
     if (!title || !content) {
         alert('Please complete title and content before exporting');
         return;
@@ -239,11 +239,11 @@ function exportPost() {
     URL.revokeObjectURL(url);
 }
 
-function formatDate(dateSting) {
-    return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
     });
 }
 
